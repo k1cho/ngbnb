@@ -1,7 +1,11 @@
 const express = require('express')
 const multer = require('multer')
+const UserController = require('../controllers/user')
 
 const router = express.Router()
+router.get('/secret', UserController.authMiddleware, (req,res) => {
+  res.json({"secret": true})
+})
 
 const Rental = require('../models/rental');
 

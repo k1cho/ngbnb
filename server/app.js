@@ -1,5 +1,6 @@
 const express = require('express');
 const rentalRoutes = require('./routes/rentals');
+const userRoutes = require('./routes/users');
 const bodyParser = require('body-parser');
 const path = require('path')
 
@@ -33,5 +34,6 @@ app.use((req, res, next) => {
 })
 
 app.use('/api/rentals', rentalRoutes)
+app.use('/api/users', userRoutes)
 
 module.exports = app;
