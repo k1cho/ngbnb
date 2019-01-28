@@ -1,4 +1,5 @@
 const Rental = require('./models/rental')
+const User = require('./models/user')
 
 class SeedDatabase {
   constructor() {
@@ -35,17 +36,43 @@ class SeedDatabase {
           description: "Very nice apartment in center of the city.",
           price: 23
     }]
+
+    this.users = [
+      {
+        username: "k1cho@live.com",
+        email: "k1cho@live.com",
+        password: "password"
+      },
+      {
+        username: "john@who.me",
+        email: "john@who.me",
+        password: "password",
+      }
+    ]
+  }
+
+  async cleanDb() {
+    await User.remove({})
+    await Rental.remove({})
   }
 
   pushRentalsToDb() {
+    const user = new User(this.users[0])
+    const user2 = new User(this.users[1])
+
     this.rentals.forEach((rental) => {
       const newRental = new Rental(rental)
-
+      newRental.user = user2
+      user2.rentals.push(newRental)
       newRental.save();
     })
+
+    user.save()
+    user2.save()
   }
 
-  seedDb() {
+  async seedDb() {
+    await this.cleanDb()
     this.pushRentalsToDb()
   }
 }

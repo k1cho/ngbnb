@@ -1,6 +1,7 @@
 const express = require('express');
 const rentalRoutes = require('./routes/rentals');
 const userRoutes = require('./routes/users');
+const bookingRoutes = require('./routes/bookings');
 const bodyParser = require('body-parser');
 const path = require('path')
 
@@ -12,8 +13,7 @@ const SeedDatabase = require('./seed-database')
 
 mongoose.connect('mongodb+srv://bkichob:mAMz7xnuk4H731Eo@cluster0-vcppn.mongodb.net/ngbnb?retryWrites=true')
     .then(() => {
-      // const fakeDb = new SeedDatabase()
-      // fakeDb.pushRentalsToDb()
+      // fakeDb = new SeedDatabase().seedDb()
 
       console.log('Connected to database');
     })
@@ -35,5 +35,6 @@ app.use((req, res, next) => {
 
 app.use('/api/rentals', rentalRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/bookings', bookingRoutes)
 
 module.exports = app;

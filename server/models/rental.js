@@ -12,7 +12,9 @@ const rentalSchema = mongoose.Schema({
   price: { type: Number, required: true },
   createdAt: { type: Date, default: Date.now },
 
-  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+
+  bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking'}]
 });
 
 module.exports = mongoose.model('Rental', rentalSchema);

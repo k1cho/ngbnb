@@ -3,6 +3,7 @@ const multer = require('multer')
 const UserController = require('../controllers/user')
 
 const router = express.Router()
+
 router.get('/secret', UserController.authMiddleware, (req,res) => {
   res.json({"secret": true})
 })
@@ -36,18 +37,29 @@ const storage = multer.diskStorage({
 
 
 router.get('', (req, res, err) => {
-  Rental.find().then(rentals => {
-    res.status(200).json(rentals)
-  })
+  Rental.find()
+    .select('-bookings')
+    .exec((err, rentals) => {
+      if (err) {
+        return res.status(404).json({error: {message: 'Rental not found'}})
+      }
+
+      return res.status(200).json(rentals)
+    })
 })
 
 
 router.get('/:id', (req, res, err) => {
-  Rental.findById(req.params.id).then(rental => {
-    res.status(200).json(rental)
-  }).catch(error => {
-    res.status(404).json({error: {message: 'Rental not found'}})
-  })
+  Rental.findById(req.params.id)
+    .populate('user', 'username -_id')
+    .populate('bookings', 'startAt endAt -_id')
+    .exec((err, rental) => {
+      if (err) {
+        return res.status(404).json({error: {message: 'Rental not found'}})
+      }
+
+      return res.status(200).json(rental)
+    })
 })
 
 module.exports = router;
