@@ -9,7 +9,7 @@ exports.auth = function(req, res) {
   const {email, password} = req.body
 
   if (!email || !password) {
-    return res.status(422).send({ errors: {message: 'Please provide email and password'}})
+    return res.status(422).send({message: 'Please provide email and password'})
   }
 
   User.findOne({email}, function (err, user) {
@@ -39,15 +39,16 @@ exports.register = (req, res) => {
   let {username, email, password, passwordConfirm} = req.body
 
   if (!email || !password) {
-    return res.status(422).send({ errors: {message: 'Please provide email and password'}})
-  }
-  if(password !== passwordConfirm) {
-    return res.status(422).send({ errors: {message: 'Password and password confirmation do not match'}})
+    return res.status(422).send({message: 'Please provide email and password'})
   }
 
   User.findOne({email: email}).then((taken) => {
     if(taken) {
-      return res.status(422).send({ errors: {message: 'Email already taken'}})
+      return res.status(422).send({message: 'Email already taken'})
+    }
+
+    if(password !== passwordConfirm) {
+      return res.status(422).send({message: 'Password and password confirmation do not match'})
     }
 
     bcrypt.hash(req.body.password, 10).then((result) => {

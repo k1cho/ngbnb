@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from 'src/app/auth/shared/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -9,4 +11,12 @@ import { Component } from '@angular/core';
 
 export class HeaderComponent {
   title: 'ngbnb';
+
+  constructor(public auth: AuthService, private router: Router) {}
+
+  logout() {
+    this.auth.logout();
+
+    this.router.navigate(['login']);
+  }
 }
