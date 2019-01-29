@@ -39,7 +39,7 @@ exports.store = (req, res, err) => {
           })
         })
 
-        return res.json({'created': 'true'})
+        return res.json({startAt, endAt})
       } else {
         return res.status(422).send({message: 'Chosen dates are already taken.'})
       }
