@@ -11,7 +11,7 @@ import { RentalListComponent } from './rental-list/rental-list.component';
 import { RentalListItemComponent } from './rental-list-item/rental-list-item.component';
 import { RentalDetailComponent } from './rental-detail/rental-detail.component';
 import { RentalDetailBookingComponent } from './rental-detail/rental-detail-booking/rental-detail-booking.component';
-
+import { RentalSearchComponent } from './rental-search/rental-search.component';
 
 import { MapModule } from '../common/map/map.module';
 import { AuthGuard } from '../auth/shared/auth.guard';
@@ -22,12 +22,14 @@ import { BookingService } from '../booking/shared/booking.service';
 
 import { UppercasePipe } from '../common/pipes/uppercase.pipe';
 
+
 const routes: Routes = [
   {
     path: 'rentals',
     component: RentalComponent,
     children: [
      { path: '', component: RentalListComponent },
+     { path: 'search/:city/:lowPrice/:highPrice', component: RentalSearchComponent },
      { path: ':id', component: RentalDetailComponent, canActivate: [AuthGuard] }
     ]
   }
@@ -41,6 +43,7 @@ const routes: Routes = [
     RentalDetailComponent,
     RentalDetailBookingComponent,
     UppercasePipe,
+    RentalSearchComponent,
   ],
   imports: [
     CommonModule,

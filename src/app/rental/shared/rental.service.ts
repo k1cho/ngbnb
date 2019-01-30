@@ -13,6 +13,12 @@ export class RentalService {
     return <Observable<Rental>>this.http.get('http://localhost:3001/api/rentals/' + id);
   }
   public getRentals(): Observable<Rental[]> {
-    return <Observable<Rental[]>>this.http.get('http://localhost:3001/api/rentals');
+    const url = 'http://localhost:3001/api/rentals';
+    return <Observable<Rental[]>>this.http.get(url);
+  }
+
+  public searchRentals(city: string, lowPrice: number, highPrice: number): Observable<Rental[]> {
+    const url = `http://localhost:3001/api/rentals/search?city=${city}&lowPrice=${lowPrice}&highPrice=${highPrice}`;
+    return <Observable<Rental[]>>this.http.get(url);
   }
 }

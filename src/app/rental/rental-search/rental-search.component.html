@@ -1,0 +1,14 @@
+<section id="rentalListing">
+    <div *ngIf="rentals.length > 0">
+      <h1 class="page-title text-center">Your Home in <strong>{{ city }}</strong></h1>
+      <h5 class="text-center">For the price between ${{lowPrice}} and ${{highPrice}}</h5>
+    </div>
+    <div *ngIf="rentals.length == 0">
+        <h2 class="text-center mt-5">Sorry, we could't find Homes that match your requirements :(</h2>
+      </div>
+    <div class="row mt-5">
+      <div class='col-md-3 col-xs-6' *ngFor="let rental of rentals">
+        <app-rental-list-item [rental]="rental"></app-rental-list-item>
+      </div>
+    </div>
+  </section>
