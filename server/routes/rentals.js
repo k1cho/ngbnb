@@ -1,14 +1,15 @@
 const express = require('express')
 const multer = require('multer')
-const UserController = require('../controllers/user')
+const UsersController = require('../controllers/user')
+const Rental = require('../models/rental');
+const User = require('../models/user')
 
 const router = express.Router()
 
-router.get('/secret', UserController.authMiddleware, (req,res) => {
+router.get('/secret', UsersController.authMiddleware, (req,res) => {
   res.json({"secret": true})
 })
 
-const Rental = require('../models/rental');
 
 const MIME_TYPE_MAP = {
   'image/png': 'png',
@@ -35,73 +36,43 @@ const storage = multer.diskStorage({
   }
 })
 
-/*
-router.get('', (req, res, err) => {
-  let data = req.query
-  //console.log(data)
+router.get('/search', function(req, res, err) {
+  const data = req.query
+  // console.log(data)
+  // query = {};
 
-  if (data.city || data.category || data.price || data.shared || data.bedrooms) {
+  // (reqUrl.city) ? (query.city = reqUrl.city): "";
+  // (reqUrl.highPrice) ? (query.price = { $lte: reqUrl.highPrice}): "";
+  // (reqUrl.lowPrice) ? (query.price = {$gte: reqUrl.lowPrice}): "";
+
+  if (data) {
     Rental.find(
       {
-        $and:
-        [
-          { city: data.city },
-          { price: { $lte: data.price } },
-          { shared: data.shared },
-          { category: data.category }
-        ]
+        city: data.city,
+        price: { $gte: data.lowPrice },
+        price: { $lte: data.highPrice }
       })
       .select('-booking')
-      .exec((rentals) => {
+      .exec(function(err, rentals) {
+         //console.log(err)
         if(rentals) {
           return res.status(200).json(rentals)
         }
         return res.status(404).json({message: 'No rentals found.'})
-      })
-  } else {
-    Rental.find()
-    .select('-bookings')
-    .exec((err, rentals) => {
-      if (err) {
-        return res.status(422).json({message: 'Something went wrong.'})
-      }
-      if(rentals)
-      {
-        return res.status(200).json(rentals)
-      }
-      return res.status(404).json({message: 'No rentals found.'})
     })
   }
 })
-*/
 
-router.get('', (req, res, err) => {
-  const data = req.query
-  //console.log(data)
-
-  if (data) {
-    Rental.find({city: data.city})
-      .select('-booking')
-      .exec((rentals) => {
-        if(rentals) {
-          return res.status(200).json(rentals)
-        }
-        return res.status(404).json({message: 'No rentals found.'})
-      })
-  } else {
-    Rental.find()
-    .select('-bookings')
-    .exec((err, rentals) => {
-      if (err) {
-        return res.status(422).json({message: 'Something went wrong.'})
-      }
-      if(rentals)
-      {
+router.get('', function(req, res, err) {
+  Rental.find()
+    .select('-booking')
+    .exec(function(err, rentals) {
+        //console.log(err)
+      if(rentals) {
         return res.status(200).json(rentals)
       }
       return res.status(404).json({message: 'No rentals found.'})
-    })
-  }
+  })
 })
 
 router.get('/:id', (req, res, err) => {
@@ -110,14 +81,34 @@ router.get('/:id', (req, res, err) => {
     .populate('bookings', 'startAt endAt -_id')
     .exec((err, rental) => {
       if (err) {
-        return res.status(422).json({error: {message: 'Something went wrong.'}})
+        return res.status(422).json({message: 'Something went wrong.'})
       }
       if(rental) {
-        return res.status(404).json({message: 'Rental not found.'})
+        return res.status(200).json(rental)
       }
-
-      return res.status(200).json(rental)
+      return res.status(404).json({message: 'Rental not found.'})
     })
+})
+
+router.post('/store', UsersController.authMiddleware, (req, res, err) => {
+  const {title, city, street, bedrooms, category, shared, image, price, description} = req.body
+  const user = res.locals.user._id
+
+  const rental = new Rental({title, city, street, bedrooms, category, shared, image, price, description, user})
+
+  rental.save(function(err) {
+    if (err) {
+      return res.status(422).json(err)
+    }
+
+    User.update({_id: user}, {$push: {rentals: rental}}, (err) => {
+      if (err) {
+        return res.status(422).json(err)
+      }
+    })
+
+    return res.status(200).json({success: 'Rental successfully created.'})
+  })
 })
 
 module.exports = router;

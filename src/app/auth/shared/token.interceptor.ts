@@ -43,7 +43,7 @@ export class TokenInterceptor implements HttpInterceptor {
                     reason: error && error.error.reason ? error.error.reason : '',
                     status: error.status
                 };
-                console.log(data);
+                console.log(error);
 
                 return throwError(error);
             }));

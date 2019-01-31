@@ -21,4 +21,8 @@ export class RentalService {
     const url = `http://localhost:3001/api/rentals/search?city=${city}&lowPrice=${lowPrice}&highPrice=${highPrice}`;
     return <Observable<Rental[]>>this.http.get(url);
   }
+
+  public createRental(rental: Rental): Observable<any> {
+    return this.http.post('http://localhost:3001/api/rentals/store', rental);
+  }
 }

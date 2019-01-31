@@ -1,9 +1,18 @@
 @import '../../../styles/variables';
 
+span {
+  color: black;
+}
+
 .navbar {
   padding: 20px;
   margin-bottom: 40px;
   color: #0A0F0D;
+
+  .nav-link-dark {
+    cursor: pointer;
+    color: #0A0F0D;
+  }
 
   .nav-link:hover {
     cursor: pointer;
@@ -11,10 +20,13 @@
 
 
   .ngbnb-search {
-    height: 50px;
-    width: 300px;
+    height: 40px;
+    width: 260px;
   }
-
+  .ngbnb-search-price {
+    height: 40px;
+    width: 130px;
+  }
 
   .navbar-brand {
     margin-right: 30px;

@@ -1,8 +1,45 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" [routerLink]="['']" routerLinkActive="router-link-active">ngbnb</a>
   <form class="form-inline">
-    <input class="form-control mr-sm-2 ngbnb-search" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0 btn-ngbnb-search" type="submit">Search</button>
+    <input
+      #city
+      class="form-control mr-sm-2 ngbnb-search"
+      type="search"
+      placeholder="Search City"
+      aria-label="Search"
+      ngx-google-places-autocomplete
+      [options]='options'
+      #placesRef="ngx-places"
+      required
+      (onAddressChange)="handleAddressChange($event)"/>
+    <div class="input-group ml-sm-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">$</span>
+        </div>
+        <input
+          #lowPrice
+          type="number"
+          class="form-control mr-sm-2 ngbnb-search-price"
+          name="lowPrice"
+          id="lowPrice"
+          required
+          placeholder="Price from">
+    </div>
+    <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">$</span>
+        </div>
+        <input
+          #highPrice
+          type="number"
+          class="form-control mr-sm-2 ngbnb-search-price"
+          name="highPrice"
+          id="highPrice"
+          required
+          placeholder="To"
+          >
+    </div>
+    <button (click)="search(city.value, lowPrice.value, highPrice.value)" class="btn btn-outline-success my-2 my-sm-0 btn-ngbnb-search" type="button">Search</button>
   </form>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
     aria-expanded="false" aria-label="Toggle navigation">
@@ -18,6 +55,14 @@
       </li>
     </ul>
     <ul class="navbar-nav ml-auto" *ngIf="auth.isAuthenticated()">
+        <div ngbDropdown class="nav-item active">
+            <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle>Owner section</a>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <a class="dropdown-item nav-link-dark" [routerLink]="['/rentals/new']" routerLinkActive="router-link-active" >Create Rental</a>
+              <a class="dropdown-item nav-link-dark">Another Action</a>
+              <a class="dropdown-item nav-link-dark">Something else is here</a>
+            </div>
+          </div>
       <li class="nav-item active">
         <a class="nav-link">{{ auth.getUsername() }}</a>
       </li>

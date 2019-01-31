@@ -34,7 +34,6 @@ export class RentalSearchComponent implements OnInit {
     this.rentalService.searchRentals(this.city, this.lowPrice, this.highPrice).subscribe(
       (rentals: Rental[]) => {
         this.rentals = rentals;
-        console.log(this.rentals);
       });
   }
 

@@ -1,6 +1,7 @@
 <div class="booking">
     <h3 class="booking-price">${{rental.price}} <span class="booking-per-night">per night</span></h3>
     <hr>
+    <div *ngIf="auth.isAuthenticated()">
     <form #bookingForm="ngForm">
       <label>Dates</label>
         <input type="text"
@@ -22,8 +23,11 @@
           required>
       </div>
   </form>
-  <button [disabled]="!bookingForm.valid || !newBooking.startAt || !newBooking.endAt || !newBooking.guests" (click)="open(content)" class="btn btn-danger btn-confirm btn-block">Reserve place now</button>
-
+  <button [disabled]="!bookingForm.valid || !newBooking.startAt || !newBooking.endAt || !newBooking.guests" (click)="open(content)" class="btn btn-dark btn-block">Reserve place now</button>
+  </div>
+  <div *ngIf="!auth.isAuthenticated()" class="should-login">
+    <a class="btn btn-block btn-dark" [routerLink]="['/login']" routerLinkActive="router-link-active">Login and Book this place today!</a>
+  </div>
   <ng-template #content let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Confirm Booking <p>{{ newBooking.startAt }} to {{ newBooking.endAt }}</p></h4>
