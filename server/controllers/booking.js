@@ -3,7 +3,7 @@ const Rental = require('../models/rental')
 const User = require('../models/user')
 const moment = require('moment')
 
-exports.store = (req, res, err) => {
+exports.storeBooking = (req, res, err) => {
   const { startAt, endAt, totalPrice, guests, days, rental} = req.body
   const user = res.locals.user
 
@@ -44,6 +44,20 @@ exports.store = (req, res, err) => {
         return res.status(422).send({message: 'Chosen dates are already taken.'})
       }
     })
+}
+
+exports.getUserBookings = function(req, res) {
+  const user = res.locals.user
+
+  Booking.where({user})
+      .populate('rental')
+      .exec(function(err, bookings) {
+        if (err) {
+          return res.status(422).json({err})
+        }
+
+        return res.status(200).json(bookings)
+      })
 }
 
 function isValidBooking(proposedBooking, rental) {

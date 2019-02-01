@@ -17,4 +17,5 @@ export class Rental {
   createdAt: string;
 
   bookings: Booking[];
+  user;
 }

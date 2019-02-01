@@ -6,11 +6,6 @@ const User = require('../models/user')
 
 const router = express.Router()
 
-router.get('/secret', UsersController.authMiddleware, (req,res) => {
-  res.json({"secret": true})
-})
-
-
 const MIME_TYPE_MAP = {
   'image/png': 'png',
   'image/jpeg': 'jpeg',
@@ -63,6 +58,20 @@ router.get('/search', function(req, res, err) {
   }
 })
 
+router.get('/manage', UsersController.authMiddleware, function(req, res) {
+  const user = res.locals.user
+
+  Rental.where({user})
+      .populate('bookings')
+      .exec(function(err, rentals) {
+        if (err) {
+          return res.status(422).json({err})
+        }
+
+        return res.status(200).json(rentals)
+      })
+})
+
 router.get('', function(req, res, err) {
   Rental.find()
     .select('-booking')
@@ -88,6 +97,47 @@ router.get('/:id', (req, res, err) => {
       }
       return res.status(404).json({message: 'Rental not found.'})
     })
+})
+
+router.delete('/:id', UsersController.authMiddleware, function(req, res) {
+  const user = res.locals.user
+
+  //console.log(user)
+
+  Rental.findById(req.params.id)
+      .populate('user', '_id')
+      .populate({
+        path: 'bookings',
+        select: 'startAt',
+        match: {startAt: {$gt: new Date()}}
+      })
+      .exec(function(err, rental) {
+        if(err) {
+          return res.status(422).json({err})
+        }
+
+        if(user.id !== rental.user.id) {
+          return res.status(422).json({errors: {title: 'Invalid User!', details: 'You are not the owner of this Rental!'}})
+        }
+
+        if(rental.bookings.length > 0) {
+          return res.status(422).json({errors: {title: 'Active bookings!', details: 'Cannot delete Rental with active Bookings!'}})
+        }
+
+        rental.remove(function(err) {
+          if(err) {
+            return res.status(422).json({err})
+          }
+
+          User.update({id: user.id}, {$pull: {rentals: rental}}, function(err) {
+            if (err) {
+              return res.status(422).json({err})
+            }
+          })
+
+          return res.status(201).json({success: 'Rental successfully deleted'})
+        })
+      })
 })
 
 router.post('/store', UsersController.authMiddleware, (req, res, err) => {
