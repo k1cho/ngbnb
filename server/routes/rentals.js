@@ -129,11 +129,7 @@ router.delete('/:id', UsersController.authMiddleware, function(req, res) {
             return res.status(422).json({err})
           }
 
-          User.update({id: user.id}, {$pull: {rentals: rental}}, function(err) {
-            if (err) {
-              return res.status(422).json({err})
-            }
-          })
+          User.update({id: user.id}, {$pull: {rentals: rental}})
 
           return res.status(201).json({success: 'Rental successfully deleted'})
         })

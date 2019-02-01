@@ -9,6 +9,7 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './common/header/header.component';
 import { RentalModule } from './rental/rental.module';
+import { ManageModule } from './manage/manage.module';
 import { AuthModule } from './auth/auth.module';
 
 const routes: Routes = [
@@ -28,7 +29,8 @@ const routes: Routes = [
     NgbModule.forRoot(),
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
-    GooglePlaceModule
+    GooglePlaceModule,
+    ManageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

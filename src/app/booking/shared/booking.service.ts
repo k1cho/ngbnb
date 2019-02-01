@@ -11,4 +11,8 @@ export class BookingService {
   public store(booking: Booking): Observable<any> {
     return this.http.post('http://localhost:3001/api/bookings', booking);
   }
+
+  public getUserBookings(): Observable<Booking[]> {
+    return <Observable<Booking[]>>this.http.get('http://localhost:3001/api/bookings/manage');
+  }
 }

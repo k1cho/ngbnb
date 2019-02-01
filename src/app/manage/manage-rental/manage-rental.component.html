@@ -1,0 +1,41 @@
+<section id="userRentals">
+  <h1 class="page-title text-center">My Rentals</h1>
+  <div class="row mt-5">
+    <ng-container *ngIf="userRentals && userRentals.length > 0">
+      <div class="col-md-4" *ngFor="let rental of userRentals; let i = index">
+        <div class="card text-center">
+          <div class="card-block">
+            <h4 class="card-title">{{ rental.title }} - {{ rental.city }}</h4>
+            <a class="btn btn-outline-dark mr-2" routerLink="/rentals/{{rental._id}}">Go to Rental</a>
+            <span *ngIf="userRentals && userRentals.length > 0">
+              <app-manage-rental-booking [bookings]="rental.bookings"></app-manage-rental-booking>
+            </span>
+          </div>
+          <div class="card-footer text-muted">
+             <p>Created at {{ rental.createdAt }}</p>
+             <button
+              (click)="rentalDeleteIndex = i"
+              *ngIf="rentalDeleteIndex !== i"
+              type="button"
+              class="btn btn-sm btn-danger btn-delete">Delete</button>
+              <div *ngIf="rentalDeleteIndex === i">
+                <p class="confirm-message">Are you sure to delete?</p>
+                <button class="btn btn-danger btn-delete" (click)="rentalDeleteIndex = undefined">No</button>
+                <button class="btn btn-success btn-delete" (click)="deleteRental(rental._id)">Yes</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="col-md-8 offset-2 text-center" *ngIf="userRentals && userRentals.length === 0">
+      <div class="alert alert-warning">
+        <p class="text-center">
+          You dont have any rentals currenty created. If you want advertised your property please follow this link.
+        </p>
+        <p class="text-center">
+          <a class="btn btn-dark" routerLink="#">Register Rental</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

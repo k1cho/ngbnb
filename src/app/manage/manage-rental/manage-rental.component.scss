@@ -1,0 +1,60 @@
+@import '../../../styles/variables';
+
+#userRentals {
+  .card {
+    margin-bottom: 20px;
+  }
+
+  .card-block {
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 14px;
+  }
+
+  .btn-dark, .btn-outline-dark {
+    font-size: 0.7rem!important;
+  }
+
+  .btn-delete {
+    margin-left: 2px!important;
+    margin-top: 6px!important;
+    float: right!important;
+    font-size: 0.6rem!important;
+  }
+
+  .card-footer {
+    font-size: 12px;
+
+    p {
+      display: inline-block;
+      line-height: 40px;
+      margin: 0;
+    }
+
+    .confirm-message {
+      font-weight: bold;
+      margin-right: 10px
+    }
+  }
+
+  .btn-bookings {
+    border-color: $main-color;
+    background-color: transparent;
+    color: $main-color;
+
+    &:hover, &:focus {
+      border-color: $main-color !important;
+      background-color: transparent !important;
+      color: $main-color !important;
+    }
+  }
+}
+
+.bookings-inner-container {
+  p {
+    font-size: 14px;
+    margin-bottom: 0px;
+  }
+}
