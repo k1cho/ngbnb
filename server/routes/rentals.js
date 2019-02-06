@@ -99,6 +99,32 @@ router.get('/:id', (req, res, err) => {
     })
 })
 
+router.patch('/:id', UsersController.authMiddleware, function(req, res) {
+  const rentalData = req.body
+  const user = res.locals.user
+
+  Rental.findById(req.params.id)
+        .populate('user')
+        .exec(function(err, foundRental) {
+          if (err) {
+            return res.status(422).json({err})
+          }
+
+          if (foundRental.user.id !== user.id) {
+            return res.status(422).json({errors: {title: 'Invalid User!', details: 'You are not the owner of this Rental!'}})
+          }
+
+          foundRental.set(rentalData)
+          foundRental.save(function(err) {
+            if (err) {
+              return res.status(422).json({err})
+            }
+
+            return res.status(200).json(foundRental)
+          })
+        })
+})
+
 router.delete('/:id', UsersController.authMiddleware, function(req, res) {
   const user = res.locals.user
 
