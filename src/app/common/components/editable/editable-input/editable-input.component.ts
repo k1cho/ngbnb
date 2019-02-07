@@ -8,6 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
 export class EditableInputComponent implements OnInit {
   @Input() entity: any;
   @Input() field: string;
+  @Input() className: string;
+
   isActiveInput = false;
 
   constructor() { }

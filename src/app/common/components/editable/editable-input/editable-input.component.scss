@@ -1,0 +1,28 @@
+.btn-dark, .btn-outline-dark {
+  font-size: 0.7rem!important;
+}
+
+.btn-delete {
+  margin-left: 2px!important;
+  font-size: 0.6rem!important;
+}
+
+.inline {
+  display: inline;
+}
+
+.rental-title {
+  margin-bottom: 5px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.editable-component {
+  .btn {
+    &.btn-editable {
+      margin-left: 5px;
+      color: white;
+      font-size: 10px;
+    }
+  }
+}
