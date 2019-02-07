@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-editable-input',
@@ -9,12 +9,17 @@ export class EditableInputComponent implements OnInit {
   @Input() entity: any;
   @Input() field: string;
   @Input() className: string;
+  @Output() entityUpdated = new EventEmitter();
 
   isActiveInput = false;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  updateEntity() {
+    this.entityUpdated.emit('dsadsa');
   }
 
 }
