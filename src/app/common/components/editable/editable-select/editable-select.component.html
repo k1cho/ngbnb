@@ -5,7 +5,7 @@
     [(ngModel)]="entity[entityField]"
     (change)="updateEntity(); isActiveInput = false">
     <option
-      [selected]="!entity[entityField]" disabled>
+      [selected]="entity[entityField] === undefined" disabled>
       ...
     </option>
     <option
