@@ -22,8 +22,8 @@ export class RentalService {
     return <Observable<Rental[]>>this.http.get(url);
   }
 
-  public createRental(rental: Rental): Observable<any> {
-    return this.http.post('http://localhost:3001/api/rentals/store', rental);
+  public createRental(rental: Rental): Observable<Rental> {
+    return <Observable<Rental>>this.http.post('http://localhost:3001/api/rentals/store', rental);
   }
 
   public getUserRentals(): Observable<Rental[]> {
@@ -36,5 +36,9 @@ export class RentalService {
 
   public updateRental(id: string, rentalData: Rental): Observable<Rental> {
     return <Observable<Rental>>this.http.patch('http://localhost:3001/api/rentals/' + id, rentalData);
+  }
+
+  public verifyRentalUser(id: string): Observable<string> {
+    return <Observable<string>>this.http.get('http://localhost:3001/api/rentals/' + id + '/verify-user');
   }
 }

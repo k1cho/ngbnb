@@ -31,6 +31,7 @@ const storage = multer.diskStorage({
   }
 })
 
+
 router.get('/search', function(req, res, err) {
   const data = req.query
   // console.log(data)
@@ -58,6 +59,7 @@ router.get('/search', function(req, res, err) {
   }
 })
 
+
 router.get('/manage', UsersController.authMiddleware, function(req, res) {
   const user = res.locals.user
 
@@ -72,6 +74,7 @@ router.get('/manage', UsersController.authMiddleware, function(req, res) {
       })
 })
 
+
 router.get('', function(req, res, err) {
   Rental.find()
     .select('-booking')
@@ -83,6 +86,25 @@ router.get('', function(req, res, err) {
       return res.status(404).json({message: 'No rentals found.'})
   })
 })
+
+
+router.get('/:id/verify-user', UsersController.authMiddleware, (req, res) => {
+  const user = req.params.id
+  Rental.findById(req.params.id)
+        .populate('user')
+        .exec(function(err, foundRental) {
+          if (err) {
+            return res.status(422).json({err})
+          }
+
+          if (foundRental.user.id !== user.id) {
+            return res.status(422).json({errors: {title: 'Invalid User!', details: 'You are not the owner of this Rental!'}})
+          }
+
+          return res.status(200).json({'status': 'verified'})
+        })
+})
+
 
 router.get('/:id', (req, res, err) => {
   Rental.findById(req.params.id)
@@ -98,6 +120,7 @@ router.get('/:id', (req, res, err) => {
       return res.status(404).json({message: 'Rental not found.'})
     })
 })
+
 
 router.patch('/:id', UsersController.authMiddleware, function(req, res) {
   const rentalData = req.body
@@ -124,6 +147,7 @@ router.patch('/:id', UsersController.authMiddleware, function(req, res) {
           })
         })
 })
+
 
 router.delete('/:id', UsersController.authMiddleware, function(req, res) {
   const user = res.locals.user
@@ -159,6 +183,7 @@ router.delete('/:id', UsersController.authMiddleware, function(req, res) {
         })
       })
 })
+
 
 router.post('/store', UsersController.authMiddleware, (req, res, err) => {
   const {title, city, street, bedrooms, category, shared, image, price, description} = req.body

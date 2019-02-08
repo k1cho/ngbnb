@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgPipesModule} from 'ngx-pipes';
+import { NgPipesModule, UcWordsPipe } from 'ngx-pipes';
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { Daterangepicker } from 'ng2-daterangepicker';
@@ -17,8 +17,9 @@ import { RentalCreateComponent } from './rental-create/rental-create.component';
 import { RentalUpdateComponent } from './rental-update/rental-update.component';
 
 import { MapModule } from '../common/map/map.module';
-import { EditableModule } from '../common/components/editable/editable-input/editable.module';
 import { AuthGuard } from '../auth/shared/auth.guard';
+import { RentalGuard } from './shared/rental.guard';
+import { EditableModule } from '../common/components/editable/editable.module';
 
 import { HelperService } from '../common/service/helper.service';
 import { RentalService } from './shared/rental.service';
@@ -34,7 +35,7 @@ const routes: Routes = [
     children: [
      { path: '', component: RentalListComponent },
      { path: 'new', component: RentalCreateComponent, canActivate: [AuthGuard] },
-     { path: ':id/edit', component: RentalUpdateComponent, canActivate: [AuthGuard] },
+     { path: ':id/edit', component: RentalUpdateComponent, canActivate: [AuthGuard, RentalGuard] },
      { path: 'search/:city/:lowPrice/:highPrice', component: RentalSearchComponent },
      { path: ':id', component: RentalDetailComponent }
     ]
@@ -68,7 +69,9 @@ const routes: Routes = [
     RentalService,
     AuthGuard,
     HelperService,
-    BookingService
+    BookingService,
+    UcWordsPipe,
+    RentalGuard
   ]
 })
 export class RentalModule {

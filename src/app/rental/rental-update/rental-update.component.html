@@ -5,7 +5,10 @@
         <img src="{{rental.image}}" alt="">
       </div>
       <div class="col-md-6">
-        <app-map [location]="rental.city + ', ' + rental.street"></app-map>
+        <app-map
+          [locationSubject]="locationSubject"
+          [location]="rental.city + ', ' + rental.street">
+        </app-map>
       </div>
     </div>
   </div>
@@ -14,7 +17,25 @@
     <div class="row">
       <div class="col-md-8">
         <div class="rental">
-          <h2 class="rental-type {{rental.category}}">{{rental.shared ? 'Shared' : 'Whole'}} {{rental.category}}</h2>
+          <h2 class="rental-type {{rental.category}}">
+              Shared
+              <app-editable-select
+              [(entity)]="rental"
+              [field]="'shared'"
+              [options]="[true, false]"
+              [style]="{'display': 'inline-block'}"
+              [className]="'rental-shared'"
+              (entityUpdated)="updateRental(rental._id, $event)"
+            ></app-editable-select>
+
+            <app-editable-select
+            [(entity)]="rental"
+            [field]="'category'"
+            [options]="rentalCategories"
+            [className]="'rental-category'"
+            (entityUpdated)="updateRental(rental._id, $event)"
+          ></app-editable-select>
+          </h2>
           <div class="rental-owner">
             <img src="https://api.adorable.io/avatars/285/abott@adorable.png" alt="">
             <span>{{ rental.user.username }}</span>
@@ -30,6 +51,7 @@
           <app-editable-input
             [(entity)]="rental"
             [field]="'city'"
+            [transform]="transformLocation"
             [className]="'rental-city'"
             (entityUpdated)="updateRental(rental._id, $event)"
           ></app-editable-input>
@@ -42,13 +64,29 @@
           ></app-editable-input>
 
           <div class="rental-room-info">
-            <span><i class="fa fa-building"></i>{{rental.bedrooms}} bedrooms</span>
-            <span><i class="fa fa-user"></i> {{rental.bedrooms + 4}} guests</span>
-            <span><i class="fa fa-bed"></i> {{rental.bedrooms + 2}} beds</span>
+            <span><i class="fa fa-building"></i>
+              <app-editable-input
+                [(entity)]="rental"
+                [field]="'bedrooms'"
+                [type]="'number'"
+                [style]="{'display': 'inline-block'}"
+                [className]="'rental-bedrooms'"
+                (entityUpdated)="updateRental(rental._id, $event)"
+              ></app-editable-input>
+              bedrooms
+            </span>
+            <span><i class="fa fa-user"></i> {{ countBedroomAssets(4)}} guests</span>
+            <span><i class="fa fa-bed"></i>{{ countBedroomAssets(2)}} beds</span>
           </div>
-          <p class="rental-description">
-            {{ rental.description | ucfirst }}
-          </p>
+
+          <app-editable-textarea
+            [(entity)]="rental"
+            [field]="'description'"
+            [rows]="'6'"
+            [cols]="'50'"
+            [className]="'rental-description'"
+            (entityUpdated)="updateRental(rental._id, $event)"
+          ></app-editable-textarea>
           <hr>
           <div class="rental-assets">
             <h3 class="title">Assets</h3>
