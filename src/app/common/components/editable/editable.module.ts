@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EditableInputComponent } from './editable-input/editable-input.component';
 import { EditableTextareaComponent } from './editable-textarea/editable-textarea.component';
+import { EditableSelectComponent } from './editable-select/editable-select.component';
 
 
 @NgModule({
@@ -13,12 +14,14 @@ import { EditableTextareaComponent } from './editable-textarea/editable-textarea
 
   exports: [
     EditableInputComponent,
-    EditableTextareaComponent
+    EditableTextareaComponent,
+    EditableSelectComponent
   ],
 
   declarations: [
     EditableInputComponent,
-    EditableTextareaComponent
+    EditableTextareaComponent,
+    EditableSelectComponent
   ]
 })
 
