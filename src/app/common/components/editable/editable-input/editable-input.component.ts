@@ -19,7 +19,8 @@ export class EditableInputComponent implements OnInit {
   }
 
   updateEntity() {
-    this.entityUpdated.emit('dsadsa');
+    this.entityUpdated.emit({[this.field]: this.entity[this.field]});
+    this.isActiveInput = false;
   }
 
 }

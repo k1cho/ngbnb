@@ -128,8 +128,6 @@ router.patch('/:id', UsersController.authMiddleware, function(req, res) {
 router.delete('/:id', UsersController.authMiddleware, function(req, res) {
   const user = res.locals.user
 
-  //console.log(user)
-
   Rental.findById(req.params.id)
       .populate('user', '_id')
       .populate({

@@ -14,8 +14,10 @@ import { RentalDetailComponent } from './rental-detail/rental-detail.component';
 import { RentalDetailBookingComponent } from './rental-detail/rental-detail-booking/rental-detail-booking.component';
 import { RentalSearchComponent } from './rental-search/rental-search.component';
 import { RentalCreateComponent } from './rental-create/rental-create.component';
+import { RentalUpdateComponent } from './rental-update/rental-update.component';
 
 import { MapModule } from '../common/map/map.module';
+import { EditableModule } from '../common/components/editable/editable-input/editable.module';
 import { AuthGuard } from '../auth/shared/auth.guard';
 
 import { HelperService } from '../common/service/helper.service';
@@ -25,7 +27,6 @@ import { BookingService } from '../booking/shared/booking.service';
 import { UppercasePipe } from '../common/pipes/uppercase.pipe';
 
 
-
 const routes: Routes = [
   {
     path: 'rentals',
@@ -33,6 +34,7 @@ const routes: Routes = [
     children: [
      { path: '', component: RentalListComponent },
      { path: 'new', component: RentalCreateComponent, canActivate: [AuthGuard] },
+     { path: ':id/edit', component: RentalUpdateComponent, canActivate: [AuthGuard] },
      { path: 'search/:city/:lowPrice/:highPrice', component: RentalSearchComponent },
      { path: ':id', component: RentalDetailComponent }
     ]
@@ -49,6 +51,7 @@ const routes: Routes = [
     UppercasePipe,
     RentalSearchComponent,
     RentalCreateComponent,
+    RentalUpdateComponent,
   ],
   imports: [
     CommonModule,
@@ -58,7 +61,8 @@ const routes: Routes = [
     MapModule,
     Daterangepicker,
     FormsModule,
-    GooglePlaceModule
+    GooglePlaceModule,
+    EditableModule
   ],
   providers: [
     RentalService,
