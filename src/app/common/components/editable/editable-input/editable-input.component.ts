@@ -7,11 +7,17 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class EditableInputComponent implements OnInit {
   @Input() entity: any;
-  @Input() field: string;
+  @Input() set field(fieldName: string) {
+    this.entityField = fieldName;
+    this.entityValueOrigin = this.entity[this.entityField];
+  }
   @Input() className: string;
   @Output() entityUpdated = new EventEmitter();
 
   isActiveInput = false;
+
+  public entityField: string;
+  public entityValueOrigin: any;
 
   constructor() { }
 
@@ -19,8 +25,18 @@ export class EditableInputComponent implements OnInit {
   }
 
   updateEntity() {
-    this.entityUpdated.emit({[this.field]: this.entity[this.field]});
+    const entityValue = this.entity[this.entityField];
+
+    if (entityValue !== this.entityValueOrigin) {
+      this.entityUpdated.emit({[this.entityField]: this.entity[this.entityField]});
+      this.entityValueOrigin = this.entity[this.entityField];
+    }
     this.isActiveInput = false;
+  }
+
+  cancelUpdate() {
+    this.isActiveInput = false;
+    this.entity[this.entityField] = this.entityValueOrigin;
   }
 
 }

@@ -3,14 +3,14 @@
     *ngIf="isActiveInput"
     class="{{ className }}"
     type="text"
-    [(ngModel)]="entity[field]"
-    [value]="entity[field]"
+    [(ngModel)]="entity[entityField]"
+    [value]="entity[entityField]"
     (keyup.enter)="updateEntity(); isActiveInput = false">
   <span
     class="{{ className }} inline"
     *ngIf="!isActiveInput"
-    (dblclick)="isActiveInput = true">{{ entity[field] }}</span>
+    (dblclick)="isActiveInput = true">{{ entity[entityField] }}</span>
   <div class="inline" *ngIf="isActiveInput">
-    <button class="btn btn-dark btn-delete" (click)="isActiveInput = false">Cancel</button>
+    <button class="btn btn-dark btn-delete" (click)="cancelUpdate()">Cancel</button>
   </div>
 </div>
