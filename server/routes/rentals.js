@@ -89,7 +89,8 @@ router.get('', function(req, res, err) {
 
 
 router.get('/:id/verify-user', UsersController.authMiddleware, (req, res) => {
-  const user = req.params.id
+  const user = res.locals.user
+
   Rental.findById(req.params.id)
         .populate('user')
         .exec(function(err, foundRental) {

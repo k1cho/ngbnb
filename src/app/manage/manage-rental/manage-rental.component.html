@@ -13,15 +13,19 @@
           </div>
           <div class="card-footer text-muted">
              <p>Created at {{ rental.createdAt }}</p>
-             <button
-              (click)="rentalDeleteIndex = i"
-              *ngIf="rentalDeleteIndex !== i"
-              type="button"
-              class="btn btn-sm btn-danger btn-delete">Delete</button>
-              <div *ngIf="rentalDeleteIndex === i">
+             <div class="col-md-12 text-center">
+              <a class="btn btn-dark btn-delete" routerLink="/rentals/{{rental._id}}/edit" routerLinkActive="router-link-active">Edit</a>
+              <button
+                (click)="rentalDeleteIndex = i"
+                *ngIf="rentalDeleteIndex !== i"
+                type="button"
+                class="btn btn-sm btn-danger btn-delete">Delete
+              </button>
+              <div *ngIf="rentalDeleteIndex === i" class="row col-md-12">
                 <p class="confirm-message">Are you sure to delete?</p>
                 <button class="btn btn-danger btn-delete" (click)="rentalDeleteIndex = undefined">No</button>
                 <button class="btn btn-success btn-delete" (click)="deleteRental(rental._id)">Yes</button>
+              </div>
               </div>
           </div>
         </div>
@@ -33,7 +37,7 @@
           You dont have any rentals currenty created. If you want advertised your property please follow this link.
         </p>
         <p class="text-center">
-          <a class="btn btn-dark" routerLink="#">Register Rental</a>
+          <a class="btn btn-dark" routerLink="/rentals/new">Register Rental</a>
         </p>
       </div>
     </div>
