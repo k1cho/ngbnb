@@ -9,7 +9,7 @@
   <span
     class="{{ className }} inline"
     *ngIf="!isActiveInput"
-    (dblclick)="isActiveInput = true">{{ entity[entityField] }}</span>
+    (dblclick)="isActiveInput = true">{{ transform(entity[entityField]) }}</span>
   <div class="inline" *ngIf="isActiveInput">
     <button class="btn btn-dark btn-delete" (click)="cancelUpdate()">Cancel</button>
   </div>

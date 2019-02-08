@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EditableComponent } from '../editable-component';
 
 @Component({
@@ -6,6 +6,8 @@ import { EditableComponent } from '../editable-component';
   templateUrl: './editable-input.component.html',
   styleUrls: ['./editable-input.component.scss']
 })
-export class EditableInputComponent extends EditableComponent implements OnInit {
+export class EditableInputComponent extends EditableComponent {
   @Input() type = 'text';
+
+  @Input() transform = (value) => value;
 }

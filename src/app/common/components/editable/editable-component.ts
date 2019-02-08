@@ -1,10 +1,10 @@
-import { OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
-export class EditableComponent implements OnInit {
+export class EditableComponent implements OnChanges {
   @Input() entity: any;
   @Input() set field(fieldName: string) {
     this.entityField = fieldName;
-    this.entityValueOrigin = this.entity[this.entityField];
+    this.setOriginValue();
   }
   @Input() className: string;
   @Output() entityUpdated = new EventEmitter();
@@ -17,7 +17,9 @@ export class EditableComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges() {
+    this.setOriginValue();
+    this.isActiveInput = false;
   }
 
   updateEntity() {
@@ -33,6 +35,10 @@ export class EditableComponent implements OnInit {
   cancelUpdate() {
     this.isActiveInput = false;
     this.entity[this.entityField] = this.entityValueOrigin;
+  }
+
+  private setOriginValue() {
+    this.entityValueOrigin = this.entity[this.entityField];
   }
 
 }
